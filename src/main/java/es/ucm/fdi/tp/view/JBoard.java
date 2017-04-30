@@ -3,6 +3,7 @@ package es.ucm.fdi.tp.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -15,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public abstract class JBoard extends JComponent {
@@ -27,9 +29,7 @@ public abstract class JBoard extends JComponent {
 	private int _CELL_HEIGHT = 50;
 	private int _CELL_WIDTH = 50;
 	private int _SEPARATOR = -2;
-
-
-
+	
 	public JBoard() {
 		initGUI();
 	}
@@ -131,6 +131,15 @@ public abstract class JBoard extends JComponent {
 			return null;
 		}
 	}
+	
+	private BufferedImage load2(String name){
+		try {
+		return ImageIO.read(new File("src/main/resources/" + name + ".png"));
+	} catch (IOException ioe) {
+		System.err.println("NO ICON for " + name);
+		return null;
+	}
+	}
 
 	private void drawCell(int row, int col, Graphics g) {
 		int x = col * _CELL_WIDTH;
@@ -142,55 +151,66 @@ public abstract class JBoard extends JComponent {
 		pieza p = getPieza(row, col);
 
 		if (p != null) {
+			Color c=getColor(p);
 			Shape s = p.getShape();
 			switch (s) {
 			case CIRCLE:
-				Color c = getColor(p.getJugador());
 				g.setColor(c);
 				g.fillOval(x + _SEPARATOR+2, y + _SEPARATOR+2, _CELL_WIDTH - 2*_SEPARATOR-4, _CELL_HEIGHT - 2*_SEPARATOR-4);
 				g.setColor(Color.black);
 				g.drawOval(x + _SEPARATOR+2, y + _SEPARATOR+2, _CELL_WIDTH - 2*_SEPARATOR-4, _CELL_HEIGHT - 2*_SEPARATOR-4);
 				break;
 			case RECTANGLE:
+				g.setColor(c);
 				g.fillRect(x + _SEPARATOR+2, y + _SEPARATOR+2, _CELL_WIDTH - 2*_SEPARATOR-4, _CELL_HEIGHT - 2*_SEPARATOR-4);
 				g.setColor(Color.black);
 				g.drawRect(x + _SEPARATOR+2, y + _SEPARATOR+2, _CELL_WIDTH - 2*_SEPARATOR-4, _CELL_HEIGHT - 2*_SEPARATOR-4);
 				break;
 			case WPAWN:
-				g.drawImage(loadImage("WhitePawn"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("WhitePawn"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case BPAWN:
-				g.drawImage(loadImage("BlackPawn"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("BlackPawn"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case BKNIGHT:
-				g.drawImage(loadImage("BlackKnight"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("BlackKnight"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("BlackKnight"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case WKNIGHT:
-				g.drawImage(loadImage("WhiteKnight"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("WhiteKnight"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("WhiteKnight"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case WBISHOP:
-				g.drawImage(loadImage("WhiteBishop"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("WhiteBishop"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("WhiteBishop"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case BBISHOP:
-				g.drawImage(loadImage("BlackBishop"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("BlackBishop"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("BlackBishop"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case WROOK:
-				g.drawImage(loadImage("WhiteRook"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("WhiteRook"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("WhiteRook"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case BROOK:
-				g.drawImage(loadImage("BlackRook"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("BlackRook"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("BlackRook"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case WQUEEN:
-				g.drawImage(loadImage("WhiteQueen"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("WhiteQueen"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("WhiteQueen"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case BQUEEN:
-				g.drawImage(loadImage("BlackQueen"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("BlackQueen"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("BlackQueen"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case WKING:
-				g.drawImage(loadImage("WhiteKing"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("WhiteKing"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("WhiteKing"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 			case BKING:
-				g.drawImage(loadImage("BlackKing"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				//g.drawImage(loadImage("BlackKing"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
+				g.drawImage(load2("BlackKing"), x, y, _CELL_WIDTH + 2, _CELL_HEIGHT + 2, null);
 				break;
 
 			default:
@@ -207,7 +227,7 @@ public abstract class JBoard extends JComponent {
 
 	protected abstract Shape getShape(int player);
 
-	protected abstract Color getColor(int player);
+	protected abstract Color getColor(pieza p);
 
 	protected abstract pieza getPieza(int row, int col);
 
