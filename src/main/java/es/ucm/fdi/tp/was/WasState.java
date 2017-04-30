@@ -41,11 +41,11 @@ public class WasState extends GameState<WasState, WasAction> {
             board[i] = new pieza[DIM];
             for (int j=0; j<DIM; j++) board[i][j] = null;
         }
-        board[7][0] = new pieza(Shape.BKNIGHT, LOBO);
-        board[0][1] = new pieza(Shape.WKNIGHT, OVEJA);
-        board[0][3] = new pieza(Shape.WKNIGHT, OVEJA);
-        board[0][5] = new pieza(Shape.WKNIGHT, OVEJA);
-        board[0][7] = new pieza(Shape.WKNIGHT, OVEJA);
+        board[7][0] = new pieza(Shape.CIRCLE, LOBO);
+        board[0][1] = new pieza(Shape.CIRCLE, OVEJA);
+        board[0][3] = new pieza(Shape.CIRCLE, OVEJA);
+        board[0][5] = new pieza(Shape.CIRCLE, OVEJA);
+        board[0][7] = new pieza(Shape.CIRCLE, OVEJA);
         
         this.turn = LOBO;
         this.winner = -1;
@@ -281,6 +281,12 @@ public class WasState extends GameState<WasState, WasAction> {
     	
     }
     
+	@Override
+	public pieza getPiezaAt(int x, int y) {
+		return this.at(x,y);
+		
+	}
+    
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("  ");
@@ -307,4 +313,6 @@ public class WasState extends GameState<WasState, WasAction> {
         }
         return sb.toString();
     }
+
+
 }

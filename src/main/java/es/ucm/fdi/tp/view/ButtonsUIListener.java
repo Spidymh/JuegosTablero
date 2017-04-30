@@ -18,16 +18,16 @@ public abstract class ButtonsUIListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
-		case "random": {
+		case "Random": {
 			generateRandom();
 		}break;
-		case "smart":{
+		case "Smart":{
 			generateSmart();
 		}break;
-		case "reset":{
+		case "Reiniciar":{
 			reset();
 		}break;
-		case "apagar": {
+		case "Apagar": {
 			apagar();
 		}break;
 		}

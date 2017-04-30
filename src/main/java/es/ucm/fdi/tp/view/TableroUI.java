@@ -1,11 +1,22 @@
 package es.ucm.fdi.tp.view;
 
 import java.awt.Color;
-import java.awt.image.ColorModel;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
-public class TableroUI extends JBoard{
+import es.ucm.fdi.tp.base.model.GameAction;
+import es.ucm.fdi.tp.base.model.GameState;
+import es.ucm.fdi.tp.mvc.BoardEvent;
+import es.ucm.fdi.tp.mvc.BoardListenable;
+import es.ucm.fdi.tp.mvc.BoardListener;
+import es.ucm.fdi.tp.mvc.ColorChangeEvent;
+import es.ucm.fdi.tp.mvc.GameTable;
+import model.ModeloTablero;
+import model.TableroWas;
+
+public class TableroUI<S extends GameState<S, A>, A extends GameAction<S, A>> extends JBoard implements BoardListenable{
 	
 	/**
 	 * 
@@ -13,10 +24,14 @@ public class TableroUI extends JBoard{
 	private static final long serialVersionUID = 4433603032523198502L;
 
 	
-	private ModeloTablero model;
+	private ModeloTablero<S,A> model;
+	private GameTable<S,A> table;
+	private List<BoardListener> observadores;
 
-	public TableroUI(ModeloTablero model){
+	public TableroUI(ModeloTablero<S,A> model, GameTable<S,A> table){
 		this.model = model;	
+		this.table = table;
+		this.observadores = new ArrayList<BoardListener>();
 	}
 
 	@Override
@@ -24,27 +39,26 @@ public class TableroUI extends JBoard{
 		// TODO Auto-generated method stub
 	}
 
-	public static void prueba(){}
 	@Override
 	protected void mouseClicked(int row, int col, int clickCount, int mouseButton) {
-		System.out.println("Mouse: " + clickCount + "clicks at position (" + row + "," + col + ") with Button "
-				+ mouseButton);
-		if(model.generarAccion(row, col)) this.repaint();
+		System.out.println("Mouse: " + clickCount + "clicks at position (" + row + "," + col + ") with Button "	+ mouseButton);
+		
+		for (int i = 0; i < observadores.size(); ++i)
+    		observadores.get(i).notifyBoardEvent(new BoardEvent(row, col, mouseButton));
+	}
+	
+	public A generateAct(int x, int y){
+		return model.generateAction(x, y);
 	}
 
 	@Override
 	protected Shape getShape(int player) {
-		return player == 0 ? Shape.BKNIGHT : Shape.WKNIGHT;
+		return player == 0 ? Shape.RECTANGLE : Shape.CIRCLE;/**/
 	}
 
 	@Override
-	protected Color getColor(int player) {
-		return player == 0 ? Color.BLUE : Color.RED;
-	}
-
-	@Override
-	protected pieza getPieza(int row, int col) {
-		return this.model.getPiezaAt(row, col);
+	protected Color getColor(pieza p) {
+		return p.getJugador() == 0 ? Color.BLUE : Color.RED;
 	}
 
 	@Override
@@ -65,55 +79,33 @@ public class TableroUI extends JBoard{
 	protected int getSepPixels() {
 		return 0; 
 	}
+
+	@Override
+	protected pieza getPieza(int row, int col) {
+		return table.getPiezaAt(row, col);
+	}
+
+
+	@Override
+	public void addObserver(BoardListener o) {
+		observadores.add(o);
+	}
+	
+	public void notifyColorChange(ColorChangeEvent e){
+	}
 	
 	
 	
-	
-	
-	public static void main (String ... args){
+	/*public static void main (String ... args){
 		JFrame jf = new JFrame("titulo");
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		TableroUI prueba = new TableroUI(new TableroWas());
+		TableroUI prueba = new TableroUI(new TableroWas(), new GameTable<WasState, WasAction>(new WasState()));
 		jf.add(prueba);
 		jf.setSize(400, 400);
 		jf.setVisible(true);
-	}
+	}*/
+
+
 	
 
 }
-
-
-/**
- * 	private static class ModeloColor extends ColorModel{
-
-		public ModeloColor(int bits) {
-			super(bits);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public int getRed(int pixel) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public int getGreen(int pixel) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public int getBlue(int pixel) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public int getAlpha(int pixel) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		
-	}
-*/
