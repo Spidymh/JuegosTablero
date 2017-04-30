@@ -6,7 +6,10 @@ import java.util.List;
 import es.ucm.fdi.tp.base.model.GameAction;
 import es.ucm.fdi.tp.base.model.GameError;
 import es.ucm.fdi.tp.base.model.GameState;
+import es.ucm.fdi.tp.base.player.RandomPlayer;
+import es.ucm.fdi.tp.base.player.SmartPlayer;
 import es.ucm.fdi.tp.mvc.GameEvent.EventType;
+import es.ucm.fdi.tp.view.pieza;
 
 /**
  * An event-driven game engine.
@@ -26,6 +29,20 @@ public class GameTable<S extends GameState<S, A>, A extends GameAction<S, A>> im
         this.parado = false;
         this.observadores = new ArrayList<GameObserver<S,A>>();
     }
+    
+    public void applyRandom(){
+    	this.execute(new RandomPlayer("tom").requestAction(this.estadoActual));
+    }
+    
+    public void applySmart(int depth){
+    	this.execute(new SmartPlayer("Peter", depth).requestAction(this.estadoActual));
+    }
+    
+    public void reset(){
+    	this.estadoActual=this.estadoInicial;
+    	System.out.println("todo ok");
+    }
+    
     public void start() {
         estadoActual = estadoInicial;
     }
@@ -33,7 +50,7 @@ public class GameTable<S extends GameState<S, A>, A extends GameAction<S, A>> im
     public void stop() throws GameError {
         if(parado) throw new GameError("Juego ya parado");
         else parado = true;
-        
+        notificarObservadores(new GameEvent(EventType.Stop, null, estadoActual, null, "Stop"));
     }
     
     public void execute(A action) {
@@ -43,6 +60,10 @@ public class GameTable<S extends GameState<S, A>, A extends GameAction<S, A>> im
     
     public S getState() {
     	return this.estadoActual;
+    }
+    
+    public pieza getPiezaAt (int x, int y){
+    	return estadoActual.getPiezaAt(x, y);
     }
     
     public void notificarObservadores(GameEvent<S, A> e){

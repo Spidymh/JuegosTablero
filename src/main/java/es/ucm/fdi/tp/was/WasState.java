@@ -281,6 +281,12 @@ public class WasState extends GameState<WasState, WasAction> {
     	
     }
     
+	@Override
+	public pieza getPiezaAt(int x, int y) {
+		return this.at(x,y);
+		
+	}
+    
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("  ");
@@ -307,4 +313,6 @@ public class WasState extends GameState<WasState, WasAction> {
         }
         return sb.toString();
     }
+
+
 }
