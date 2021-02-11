@@ -63,8 +63,10 @@ public class BoardExample extends JFrame {
 			}
 
 			@Override
-			protected Color getColor(int player) {
-				return BoardExample.this.getColor(player);
+			protected Color getColor(pieza p) {
+				if(p.getShape()==Shape.CIRCLE || p.getShape()==Shape.RECTANGLE)
+					return BoardExample.this.getColor(p.getJugador());
+				else return null;
 			}
 
 			@Override
@@ -127,13 +129,13 @@ public class BoardExample extends JFrame {
 				if (d < 0.1) {
 					board[i][j] = null;
 				} else if (d < 0.2) {
-					board [i][j] = new pieza(Shape.BKNIGHT, 0);
+					board [i][j] = new pieza(Shape.RECTANGLE, 0);
 				} else if (d < 0.3) {
-					board [i][j] = new pieza(Shape.BBISHOP, 0);
+					board [i][j] = new pieza(Shape.CIRCLE, 0);
 				}else if (d < 0.4) {
-					board [i][j] = new pieza(Shape.BROOK, 0);
+					board [i][j] = new pieza(Shape.RECTANGLE, 1);
 				}else if (d < 0.5) {
-					board [i][j] = new pieza(Shape.BQUEEN, 0);
+					board [i][j] = new pieza(Shape.CIRCLE, 1);
 				}else if (d < 0.6) {
 					board [i][j] = new pieza(Shape.WKNIGHT, 1);
 				}else if (d < 0.7) {
